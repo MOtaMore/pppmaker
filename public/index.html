@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papers Please - Passport Maker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="imgs/logo.png">
+
+    <meta property="og:title" content="🖨️ Papers Please - Passport Maker" />
+    <meta property="og:description" content="Create your passport that's completely legal and tailored to your needs." />
+    <meta property="og:image" content="https://pppmaker.com/imgs/logo.png" />
+    <meta property="og:url" content="https://pppmaker.com/" />
+    <meta property="og:type" content="website" />
+</head>
+<body>
+    <div class="scanline"></div>
+    <div class="terminal-container">
+        <!-- Government System Header -->
+        <header class="terminal-header">
+            <div class="header-badge left">◆</div>
+            <div class="header-badge right">◆</div>
+            <h1 class="system-title">MINISTRY OF ADMISSION</h1>
+            <p class="system-subtitle">AUTOMATED DOCUMENT ISSUING SYSTEM</p>
+            <div class="system-info">
+                <span class="info-item">TERMINAL: #A-7821</span>
+                <span class="info-divider">|</span>
+                <span class="info-item">LEVEL: AUTHORIZED</span>
+                <span class="info-divider">|</span>
+                <span class="info-item" id="system-date">DATE: --/--/----</span>
+            </div>
+            <!-- Support Buttons -->
+            <div class="support-buttons">
+                <a href="https://ko-fi.com/motamore" target="_blank" class="support-button kofi">
+                    <span class="button-icon">☕</span>
+                    SUPPORT
+                </a>
+                <a href="https://github.com/MOtaMore/pppmaker" target="_blank" class="support-button github">
+                    <span class="button-icon">⚡</span>
+                    GITHUB
+                </a>
+            </div>
+        </header>
+
+        <main class="main-grid">
+            <!-- Photo Processing Control Panel -->
+            <section class="control-terminal">
+                <div class="terminal-window">
+                    <div class="terminal-title">
+                        <span class="terminal-icon">▪</span>
+                        PHOTO PROCESSING
+                    </div>
+                    
+                    <div class="terminal-content">
+                        <!-- Processing Mode Selector -->
+                        <div class="mode-selector">
+                            <div class="mode-tabs">
+                                <button class="mode-tab active" data-mode="auto">
+                                    <span class="tab-icon">⚡</span>
+                                    AUTOMATIC PROCESSING
+                                </button>
+                                <button class="mode-tab" data-mode="manual">
+                                    <span class="tab-icon">🎯</span>
+                                    PRE-PROCESSED IMAGE
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Automatic Processing Mode -->
+                        <div class="processing-mode" id="auto-mode">
+                            <!-- Photo Upload Area -->
+                            <div class="upload-section">
+                                <input type="file" id="image-upload" accept="image/*" class="file-input">
+                                <label for="image-upload" class="upload-zone">
+                                    <div class="upload-icon">📷</div>
+                                    <span class="upload-primary">INSERT PHOTO</span>
+                                    <span class="upload-secondary">Drag file or click</span>
+                                    <span class="upload-warning">* 3:4 format required *</span>
+                                </label>
+                            </div>
+
+                            <!-- Threshold Control Slider -->
+                            <div class="control-group">
+                                <label class="control-label">
+                                    <span class="label-primary">CONTRAST ADJUSTMENT</span>
+                                    <span class="label-secondary">Facial detail control</span>
+                                </label>
+                                <div class="slider-container">
+                                    <input type="range" id="threshold" class="threshold-slider" 
+                                           min="0.1" max="0.9" step="0.05" value="0.5">
+                                    <span class="threshold-display" id="threshold-value">0.5</span>
+                                </div>
+                            </div>
+
+                            <!-- Process Button -->
+                            <button id="process-btn" class="process-button" disabled>
+                                <span class="button-icon">⚡</span>
+                                PROCESS PHOTO
+                            </button>
+                        </div>
+
+                        <!-- Manual Processing Mode -->
+                        <div class="processing-mode hidden" id="manual-mode">
+                            <!-- Pre-processed Image Upload -->
+                            <div class="upload-section">
+                                <input type="file" id="preproc-upload" accept="image/*" class="file-input">
+                                <label for="preproc-upload" class="upload-zone preproc-zone">
+                                    <div class="upload-icon">🎯</div>
+                                    <span class="upload-primary">LOAD 40x48 IMAGE</span>
+                                    <span class="upload-secondary">Manually processed image</span>
+                                    <span class="upload-warning">* EXACTLY 40x48 pixels *</span>
+                                </label>
+                            </div>
+
+                            <!-- Format Information Panel -->
+                            <div class="format-info">
+                                <div class="info-row">
+                                    <span class="info-label">DIMENSIONS:</span>
+                                    <span class="info-value">40 x 48 PIXELS EXACT</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">COLORS:</span>
+                                    <span class="info-value">PREFERABLY LIMITED PALETTE</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">FORMAT:</span>
+                                    <span class="info-value">PNG, JPG, GIF</span>
+                                </div>
+                            </div>
+
+                            <!-- Direct Load Button -->
+                            <button id="direct-load-btn" class="process-button" disabled>
+                                <span class="button-icon">📁</span>
+                                LOAD IMAGE DIRECTLY
+                            </button>
+                        </div>
+
+                        <!-- Processing Status Information -->
+                        <div class="process-info">
+                            <div class="info-row">
+                                <span class="info-label">RESOLUTION:</span>
+                                <span class="info-value">40x48 PIXELS</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">COLORS:</span>
+                                <span class="info-value">GOVERNMENT STANDARD</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">STATUS:</span>
+                                <span class="info-value" id="process-status">AWAITING INPUT</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Passport Generation Panel -->
+            <section class="passport-terminal">
+                <div class="terminal-window">
+                    <div class="terminal-title">
+                        <span class="terminal-icon">▪</span>
+                        DOCUMENT GENERATION
+                    </div>
+                    
+                    <div class="terminal-content">
+                        <!-- Photo Preview Section -->
+                        <div class="photo-preview-section">
+                            <div class="preview-split">
+                                <div class="preview-box">
+                                    <div class="preview-label">ORIGINAL</div>
+                                    <div class="preview-frame">
+                                        <img id="original-preview" class="original-image hidden">
+                                        <div class="preview-empty" id="original-placeholder">
+                                            <span>NO PHOTO</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="preview-box">
+                                    <div class="preview-label">PROCESSED</div>
+                                    <div class="preview-frame">
+                                        <img id="processed-preview" class="processed-image hidden">
+                                        <div class="preview-empty" id="pixelated-placeholder">
+                                            <span>NOT PROCESSED</span>
+                                        </div>
+                                    </div>
+                                    <!-- Processed Image Download Button -->
+                                    <button id="download-processed-btn" class="download-processed-button hidden">
+                                        <span class="button-icon">💾</span>
+                                        DOWNLOAD 40x48
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Country Selector -->
+                        <div class="control-group">
+                            <label class="control-label">
+                                <span class="label-primary">ISSUING COUNTRY</span>
+                                <span class="label-secondary">Select official template</span>
+                            </label>
+                            <select id="country-select" class="country-selector" disabled>
+                                <option value="">-- SELECT COUNTRY --</option>
+                            </select>
+                        </div>
+
+                        <!-- Passport Form Fields -->
+                        <div class="passport-fields" id="passport-fields">
+                            <div class="field-group">
+                                <label class="field-label">FULL NAME</label>
+                                <input type="text" id="field-name" class="field-input" placeholder="SURNAME, NAME" disabled>
+                            </div>
+                            
+                            <div class="field-row">
+                                <div class="field-group">
+                                    <label class="field-label">DATE OF BIRTH</label>
+                                    <input type="text" id="field-dob" class="field-input" placeholder="DD.MM.YYYY" maxlength="10" disabled>
+                                </div>
+                                <div class="field-group">
+                                    <label class="field-label">SEX</label>
+                                    <select id="field-sex" class="field-input" disabled>
+                                        <option value="">-</option>
+                                        <option value="M">M</option>
+                                        <option value="F">F</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="field-group">
+                                <label class="field-label">CITY OF ISSUE</label>
+                                <select id="field-city" class="field-input" disabled>
+                                    <option value="">-- SELECT --</option>
+                                </select>
+                            </div>
+                            
+                            <div class="field-row">
+                                <div class="field-group">
+                                    <label class="field-label">PASSPORT NO.</label>
+                                    <input type="text" id="field-number" class="field-input" placeholder="XXXXX-XXXXX" maxlength="11" disabled>
+                                </div>
+                                <div class="field-group">
+                                    <label class="field-label">EXPIRY</label>
+                                    <input type="text" id="field-expiry" class="field-input" placeholder="DD.MM.YYYY" maxlength="10" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <button id="generate-btn" class="action-button generate" disabled>
+                                <span class="button-icon">📋</span>
+                                GENERATE PASSPORT
+                            </button>
+                            <button id="download-btn" class="action-button download hidden">
+                                <span class="button-icon">💾</span>
+                                DOWNLOAD DOCUMENT
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Passport Preview Modal -->
+        <section class="passport-preview-section hidden" id="passport-preview-section">
+            <div class="terminal-window preview-window">
+                <div class="terminal-title">
+                    <span class="terminal-icon">▪</span>
+                    DOCUMENT PREVIEW
+                </div>
+                <div class="terminal-content">
+                    <div class="passport-container">
+                        <img id="passport-preview" class="passport-preview-image">
+                    </div>
+                    <div class="preview-actions">
+                        <button id="close-preview" class="action-button">
+                            <span class="button-icon">✖</span>
+                            CLOSE PREVIEW
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Footer -->
+        <footer class="terminal-footer">
+            <div class="footer-content">
+                <span class="footer-text">GLORY TO ARSTOTZKA</span>
+                <span class="footer-divider">◆</span>
+                <span class="footer-text">MINISTRY OF ADMISSION v1.0</span>
+            </div>
+            <div class="legal-disclaimer">
+                <p class="disclaimer-text">
+                    This is a fan-made project and is not affiliated with, endorsed by, or connected to Lucas Pope, 
+                    3909 LLC, or the Papers, Please franchise. All rights to Papers, Please belong to their respective owners.
+                </p>
+                <p class="version-info">Version 1.0 - Open Source Project</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading-overlay hidden" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">PROCESSING...</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

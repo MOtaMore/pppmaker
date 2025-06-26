@@ -1,0 +1,1073 @@
+/**
+ * Papers, Please - Passport Generator Styles
+ * 
+ * Retro terminal aesthetic inspired by the game "Papers, Please"
+ * Features CRT effects, pixelated rendering, and government bureaucracy theme
+ * 
+ * @author MOtaMore
+ * @license MIT
+ */
+
+/**
+ * CSS Variables for Government Terminal Theme
+ * Defines the color palette and spacing used throughout the application
+ */
+:root {
+    --gov-green: #4a5043;
+    --gov-dark: #2c2e2a;
+    --gov-light: #6b6e63;
+    --gov-paper: #d4c8be;
+    --gov-stamp: #8b2635;
+    --pixel-light: #ac9f9b;
+    --pixel-dark: #625252;
+    --warning: #c41e3a;
+    --approved: #5a7c4e;
+    --terminal-bg: #3a3d37;
+    --terminal-border: #5a5d57;
+    --text-glow: #e8dfd6;
+    --info-blue: #2c5aa0;
+}
+
+/**
+ * Global Reset and Base Configuration
+ * Ensures consistent rendering across browsers
+ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/**
+ * Body Styling
+ * Sets up the terminal font and background with scan lines effect
+ */
+body {
+    font-family: 'Courier New', 'Consolas', monospace;
+    background-color: var(--gov-dark);
+    color: var(--gov-paper);
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0,0,0,0.1) 2px,
+            rgba(0,0,0,0.1) 4px
+        );
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/**
+ * CRT Monitor Effect
+ * Creates the curved screen effect of old monitors
+ */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/**
+ * Animated Scan Line Effect
+ * Simulates the refresh rate of CRT monitors
+ */
+.scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.03), transparent);
+    animation: scanline 8s linear infinite;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+@keyframes scanline {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100vh); }
+}
+
+/**
+ * Main Container
+ * Centers content and provides maximum width constraint
+ */
+.terminal-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+/**
+ * System Header
+ * Government terminal header with authentication badges
+ */
+.terminal-header {
+    background: var(--gov-green);
+    border: 3px solid var(--terminal-border);
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    box-shadow: 
+        0 4px 8px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.header-badge {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gov-stamp);
+    font-size: 2rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.header-badge.left { left: 2rem; }
+.header-badge.right { right: 2rem; }
+
+.system-title {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    color: var(--text-glow);
+    text-shadow: 
+        0 0 10px rgba(232, 223, 214, 0.5),
+        0 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 0.5rem;
+}
+
+.system-subtitle {
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+}
+
+.system-info {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.info-divider {
+    color: var(--gov-stamp);
+}
+
+/**
+ * Support Buttons in Header
+ */
+.support-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.support-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--gov-dark);
+    color: var(--gov-paper);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    border: 2px solid var(--terminal-border);
+    transition: all 0.3s ease;
+}
+
+.support-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.support-button.kofi {
+    background: var(--gov-stamp);
+    color: var(--text-glow);
+}
+
+.support-button.kofi:hover {
+    background: var(--warning);
+}
+
+.support-button.github {
+    background: var(--gov-green);
+    color: var(--text-glow);
+}
+
+.support-button.github:hover {
+    background: var(--gov-light);
+}
+
+.support-button .button-icon {
+    font-size: 1rem;
+}
+
+/**
+ * Main Grid Layout
+ * Two-column layout for control panel and passport generation
+ */
+.main-grid {
+    display: grid;
+    grid-template-columns: 450px 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/**
+ * Terminal Window Component
+ * Reusable window style for all panels
+ */
+.terminal-window {
+    background: var(--terminal-bg);
+    border: 2px solid var(--terminal-border);
+    box-shadow: 
+        0 4px 12px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.terminal-title {
+    background: var(--gov-green);
+    padding: 0.75rem 1rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    border-bottom: 2px solid var(--terminal-border);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.terminal-icon {
+    color: var(--gov-stamp);
+}
+
+.terminal-content {
+    padding: 1.5rem;
+}
+
+/**
+ * Mode Selector Tabs
+ * Switches between automatic and manual processing modes
+ */
+.mode-selector {
+    margin-bottom: 1.5rem;
+}
+
+.mode-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 2px solid var(--terminal-border);
+    overflow: hidden;
+}
+
+.mode-tab {
+    padding: 1rem;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    background: var(--gov-dark);
+    color: var(--gov-paper);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    border-right: 1px solid var(--terminal-border);
+}
+
+.mode-tab:last-child {
+    border-right: none;
+}
+
+.mode-tab:hover {
+    background: var(--gov-green);
+}
+
+.mode-tab.active {
+    background: var(--info-blue);
+    color: var(--text-glow);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.tab-icon {
+    font-size: 1.2rem;
+}
+
+/**
+ * Processing Modes Container
+ */
+.processing-mode {
+    margin-bottom: 1.5rem;
+}
+
+/**
+ * File Upload Zone
+ * Drag-and-drop area for image upload
+ */
+.upload-section {
+    margin-bottom: 2rem;
+}
+
+.file-input {
+    display: none;
+}
+
+.upload-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    background: var(--gov-dark);
+    border: 3px dashed var(--terminal-border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-zone:hover {
+    background: var(--gov-green);
+    border-color: var(--gov-light);
+}
+
+.upload-zone.has-file {
+    border-color: var(--approved);
+    background: rgba(90, 124, 78, 0.1);
+}
+
+.upload-zone.preproc-zone {
+    border-color: var(--info-blue);
+}
+
+.upload-zone.preproc-zone:hover {
+    background: rgba(44, 90, 160, 0.1);
+    border-color: var(--info-blue);
+}
+
+.upload-zone.preproc-zone.has-file {
+    border-color: var(--info-blue);
+    background: rgba(44, 90, 160, 0.2);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+.upload-primary {
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+.upload-secondary {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+}
+
+.upload-warning {
+    font-size: 0.8rem;
+    color: var(--gov-stamp);
+    font-weight: bold;
+}
+
+/**
+ * Format Information Panel
+ */
+.format-info {
+    background: var(--gov-dark);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--info-blue);
+    border-left: 4px solid var(--info-blue);
+}
+
+/**
+ * Form Controls
+ */
+.control-group {
+    margin-bottom: 1.5rem;
+}
+
+.control-label {
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.label-primary {
+    display: block;
+    font-weight: bold;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+}
+
+.label-secondary {
+    display: block;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-top: 0.25rem;
+}
+
+/**
+ * Threshold Slider Control
+ */
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--gov-dark);
+    padding: 1rem;
+    border: 1px solid var(--terminal-border);
+}
+
+.threshold-slider {
+    flex: 1;
+    height: 8px;
+    background: var(--gov-dark);
+    outline: none;
+    -webkit-appearance: none;
+    border: 1px solid var(--terminal-border);
+}
+
+.threshold-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--gov-stamp);
+    cursor: pointer;
+    border: 2px solid var(--terminal-border);
+}
+
+.threshold-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--gov-stamp);
+    cursor: pointer;
+    border: 2px solid var(--terminal-border);
+}
+
+.threshold-display {
+    min-width: 3rem;
+    text-align: center;
+    font-weight: bold;
+    padding: 0.25rem 0.5rem;
+    background: var(--gov-green);
+    border: 1px solid var(--terminal-border);
+}
+
+/**
+ * Process Information Display
+ */
+.process-info {
+    background: var(--gov-dark);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--terminal-border);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    font-size: 0.85rem;
+}
+
+.info-label {
+    opacity: 0.7;
+}
+
+.info-value {
+    font-weight: bold;
+    color: var(--text-glow);
+}
+
+/**
+ * Button Styles
+ * Process and action buttons with hover effects
+ */
+.process-button,
+.action-button {
+    width: 100%;
+    padding: 1rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    border: 2px solid var(--terminal-border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.process-button {
+    background: var(--gov-stamp);
+    color: var(--text-glow);
+}
+
+.process-button:hover:not(:disabled) {
+    background: var(--warning);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+
+.process-button:disabled {
+    background: var(--gov-dark);
+    color: var(--terminal-border);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.action-button {
+    background: var(--gov-green);
+    color: var(--text-glow);
+}
+
+.action-button.generate {
+    background: var(--approved);
+}
+
+.action-button.download {
+    background: var(--gov-stamp);
+}
+
+.action-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    filter: brightness(1.1);
+}
+
+.action-button:disabled {
+    background: var(--gov-dark);
+    color: var(--terminal-border);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.button-icon {
+    font-size: 1.2rem;
+}
+
+/**
+ * Download Processed Image Button
+ */
+.download-processed-button {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    background: var(--info-blue);
+    color: var(--text-glow);
+    border: 1px solid var(--terminal-border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+.download-processed-button:hover {
+    background: #3a6bb8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.download-processed-button .button-icon {
+    font-size: 1rem;
+}
+
+/**
+ * Photo Preview Section
+ */
+.preview-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.preview-box {
+    text-align: center;
+}
+
+.preview-label {
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+}
+
+.preview-frame {
+    background: var(--gov-dark);
+    border: 2px solid var(--terminal-border);
+    padding: 1rem;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.original-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.pixelated-display {
+    width: 120px;
+    height: 144px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+.preview-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    opacity: 0.5;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/**
+ * Country Selector Dropdown
+ */
+.country-selector {
+    width: 100%;
+    padding: 0.75rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: bold;
+    background: var(--gov-dark);
+    color: var(--gov-paper);
+    border: 2px solid var(--terminal-border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.country-selector:hover:not(:disabled) {
+    background: var(--gov-green);
+}
+
+.country-selector:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/**
+ * Passport Form Fields
+ */
+.passport-fields {
+    background: var(--gov-dark);
+    padding: 1rem;
+    border: 1px solid var(--terminal-border);
+    margin-bottom: 1.5rem;
+}
+
+.field-group {
+    margin-bottom: 1rem;
+}
+
+.field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.field-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+    letter-spacing: 0.05em;
+}
+
+.field-input {
+    width: 100%;
+    padding: 0.5rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    background: var(--terminal-bg);
+    color: var(--gov-paper);
+    border: 1px solid var(--terminal-border);
+    transition: all 0.3s ease;
+}
+
+.field-input:focus {
+    outline: none;
+    border-color: var(--gov-stamp);
+    background: var(--gov-green);
+}
+
+.field-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/**
+ * Action Buttons Container
+ */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+/**
+ * Passport Preview Modal
+ */
+.passport-preview-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+}
+
+.preview-window {
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: auto;
+}
+
+.passport-container {
+    background: var(--gov-dark);
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+
+#passport-canvas {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid var(--terminal-border);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.preview-actions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+/**
+ * Footer Section
+ */
+.terminal-footer {
+    text-align: center;
+    padding: 2rem 0 1rem 0;
+    margin-top: 4rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-bottom: 1.5rem;
+}
+
+.footer-divider {
+    color: var(--gov-stamp);
+}
+
+/**
+ * Legal Disclaimer
+ */
+.legal-disclaimer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background: var(--gov-dark);
+    border: 1px solid var(--terminal-border);
+    border-radius: 0;
+}
+
+.disclaimer-text {
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--gov-paper);
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+}
+
+.version-info {
+    font-size: 0.7rem;
+    color: var(--gov-light);
+    opacity: 0.6;
+    margin: 0;
+}
+
+/**
+ * Support Section (Expandable)
+ */
+.support-section {
+    margin-top: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, margin-top 0.5s ease-in-out;
+    opacity: 0;
+}
+
+.support-section.hidden {
+    display: none;
+}
+
+.support-section.visible {
+    max-height: 400px;
+    opacity: 1;
+    margin-top: 1rem;
+}
+
+.support-content {
+    background: var(--gov-dark);
+    border: 2px solid var(--terminal-border);
+    padding: 2rem;
+    text-align: center;
+}
+
+.support-header {
+    margin-bottom: 1.5rem;
+}
+
+.support-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.support-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    color: var(--text-glow);
+    margin: 0;
+}
+
+.support-message {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--gov-paper);
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.kofi-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: var(--gov-stamp);
+    color: var(--text-glow);
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border: 2px solid var(--terminal-border);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.kofi-button:hover {
+    background: var(--warning);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+
+.kofi-icon {
+    font-size: 1.3rem;
+}
+
+.alternative-download {
+    padding-top: 1rem;
+    border-top: 1px solid var(--terminal-border);
+}
+
+.alternative-text {
+    font-size: 0.85rem;
+    color: var(--gov-paper);
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+}
+
+.direct-download-button {
+    background: none;
+    border: none;
+    color: var(--info-blue);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.direct-download-button:hover {
+    color: var(--text-glow);
+    text-shadow: 0 0 4px rgba(44, 90, 160, 0.5);
+}
+
+/* Fade out animation for download button */
+.action-button.download.fading {
+    animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/**
+ * Passport Preview Image
+ */
+.passport-preview-image {
+    max-width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/**
+ * Processed Image Display
+ */
+.processed-image {
+    width: 120px;
+    height: 144px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/**
+ * Loading Overlay
+ */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--gov-dark);
+    border-top: 4px solid var(--gov-stamp);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    color: var(--text-glow);
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/**
+ * Utility Classes
+ */
+.hidden {
+    display: none !important;
+}
+
+/**
+ * Animations
+ */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+    20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+/**
+ * Interactive Button Press Effect
+ */
+button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
