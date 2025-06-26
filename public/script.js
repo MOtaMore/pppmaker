@@ -614,10 +614,15 @@ async function handleGeneratePassport() {
         if (data.success) {
             AppState.passportData = data.passportImage;
             
+            // Show passport preview
             elements.passportPreview.src = data.passportImage;
             elements.passportPreviewSection.classList.remove('hidden');
-            elements.downloadBtn.classList.remove('hidden');
             
+            // Make sure download button is visible and stays visible
+            elements.downloadBtn.classList.remove('hidden');
+            elements.downloadBtn.style.display = 'flex'; // Force display
+            
+            console.log('Passport generated, download button should be visible');
             updateStatus('DOCUMENT GENERATED');
         } else {
             throw new Error(data.error || 'Unknown error');
@@ -633,43 +638,28 @@ async function handleGeneratePassport() {
 }
 
 /**
- * Handle passport download button click
- * Fades out button and shows support section
+ * Download generated passport document
  */
 function handleDownloadPassport() {
-    if (!AppState.passportData) return;
+    console.log('Download button clicked');
+    console.log('Passport data available:', !!AppState.passportData);
     
-    // Add fading class to download button
-    elements.downloadBtn.classList.add('fading');
+    if (!AppState.passportData) {
+        console.error('No passport data available');
+        return;
+    }
     
-    // After fade animation, hide button and show support section
-    setTimeout(() => {
-        elements.downloadBtn.classList.add('hidden');
-        elements.downloadBtn.classList.remove('fading');
-        
-        // Show support section with smooth expansion
-        elements.supportSection.classList.remove('hidden');
-    }, 500); // Match the CSS animation duration
-}
-
-/**
- * Perform the actual passport download
- * Called from the support section's direct download link
- */
-function performDirectDownload() {
-    if (!AppState.passportData) return;
-    
+    // Create download link
     const link = document.createElement('a');
     link.download = `passport_${AppState.currentCountry}_${Date.now()}.png`;
     link.href = AppState.passportData;
     
+    // Trigger download
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     
-    // After download, you could optionally hide the support section and show the button again
-    // Or leave it as is so users can download multiple times
-    
+    console.log('Download triggered');
     updateStatus('DOCUMENT DOWNLOADED');
 }
 
@@ -717,14 +707,6 @@ function formatPassportInput(e) {
     
     e.target.value = value;
     validateFields();
-}
-
-/**
- * Reset download section to initial state
- */
-function resetDownloadSection() {
-    elements.supportSection.classList.add('hidden');
-    elements.downloadBtn.classList.remove('hidden', 'fading');
 }
 
 /**
